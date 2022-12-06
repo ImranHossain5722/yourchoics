@@ -22,8 +22,8 @@ const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
     const ref = useRef()
 
     return (
-        <div className=''>
-            <div className='bg-white flex flex-col md:flex-row md:justify-start justify-center items-center shadow-md my-1'>
+        <div className='sticky top-0 z-10'>
+            <div className='bg-white flex flex-col md:flex-row md:justify-start justify-center items-center shadow-md my-1  ' >
                 <div className='logo-container'>
 
                     <Link href={'/'}>
@@ -44,7 +44,7 @@ const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
                     <AiOutlineShoppingCart className='text-2xl text-black' />
                 </div>
             </div>
-            <div ref={ref} className='sidebar w-72 h-full  absolute top-14 right-0 bg-gray-100 p-7 transition-transform translate-x-full z-30 '> <h2 className='font-bold text-xl text-center mb-5'>Shopping cart</h2>
+            <div ref={ref} className='sidebar w-72 h-[100vh]  absolute top-14 right-0 bg-gray-100 p-7 transition-transform translate-x-full '> <h2 className='font-bold text-xl text-center mb-5'>Shopping cart</h2>
                 <span onClick={toggleCart} className='absolute top-2 right-0 cursor-pointer'><IoIosCloseCircle className='' /></span>
                 <ol className='list-decimal font-semibold'>
                     {Object.keys(cart).length==0 && <div className=''><p className='text-center text-sm'>Your cart is empty. Please add a few items to checkout </p></div>}
@@ -57,8 +57,8 @@ const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
                 </ol>
                 <div className="flex mt-2 ">
 
-                <button className="flex mr-2  text-white bg-indigo-500 
-                 border-0 p-2 focus:outline-none hover:bg-indigo-600 rounded text-sm"> Checkout </button>
+                <Link href={'/checkout'}><button className="flex mr-2  text-white bg-indigo-500 
+                 border-0 p-2 focus:outline-none hover:bg-indigo-600 rounded text-sm"> Checkout </button> </Link>
 
                 <button onClick={clearCart} className="flex mr-2  text-white bg-indigo-500 
                  border-0 p-2 focus:outline-none hover:bg-indigo-600 rounded text-sm"> Clear Cart</button>
