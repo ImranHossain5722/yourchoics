@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useRef } from 'react';
 import { AiOutlineShoppingCart, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import { IoIosCloseCircle, IoBagCheckOutline } from 'react-icons/io'
+import { MdAccountCircle} from 'react-icons/md'
 
 
 const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
@@ -40,12 +41,16 @@ const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
                 </div>
 
                 {/* cart menu */}
-                <div onClick={toggleCart} className='cart absolute  right-0 mx-5 cursor-pointer'>
-                    <AiOutlineShoppingCart className='text-2xl text-black' />
+                <div  className='cart flex absolute  right-0 mx-5 cursor-pointer'>
+               <Link href={'/login'}><MdAccountCircle className='text-2xl text-black mr-3' />
+               </Link> 
+                 <AiOutlineShoppingCart onClick={toggleCart} className='text-2xl text-black' />
+                    
                 </div>
             </div>
-            <div ref={ref} className='sidebar w-72 h-[100vh]  absolute top-14 right-0 bg-gray-100 p-7 transition-transform translate-x-full '> <h2 className='font-bold text-xl text-center mb-5'>Shopping cart</h2>
+            <div ref={ref} className={`sidebar w-72 h-[100vh]  absolute top-14 right-0 bg-gray-100 p-7 transition-transform ${Object.keys(cart).length!==0 ? 'translate-x-0':'translate-x-full'}`} > <h2 className='font-bold text-xl text-center mb-5'>Shopping cart</h2>
                 <span onClick={toggleCart} className='absolute top-2 right-0 cursor-pointer'><IoIosCloseCircle className='' /></span>
+               
                 <ol className='list-decimal font-semibold'>
                     {Object.keys(cart).length==0 && <div className=''><p className='text-center text-sm'>Your cart is empty. Please add a few items to checkout </p></div>}
                     {Object.keys(cart).map((k)=>{ return <li key={k} >
@@ -55,6 +60,7 @@ const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
                         </div>
                     </li> }) }
                 </ol>
+                <span className='text-lg font-bold'>Subtotal: {subTotal} $</span>
                 <div className="flex mt-2 ">
 
                 <Link href={'/checkout'}><button className="flex mr-2  text-white bg-indigo-500 
