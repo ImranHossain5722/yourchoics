@@ -6,10 +6,18 @@ import '../styles/globals.css'
 function MyApp({ Component, pageProps }) {
  const [cart, setCart] =useState({})
  const [subTotal, setSubTotal] = useState(0)
-  const saveCart =(myCart)=>{
-    localStorage.setItem("cart", myCart)
+ 
 
-    
+
+ const saveCart =(myCart)=>{
+    localStorage.setItem("cart", JSON.stringify(myCart))
+
+    let subt =0;
+    let keys = Object.keys(myCart)
+    for(let i=0; i < keys.length;i++){
+      subt += myCart[keys[i]]['price'] * myCart[keys[i]].qty
+    }
+    setSubTotal(subt)
   }
 
   useEffect(()=>{
@@ -64,9 +72,9 @@ const clearCart =()=>{
 }
 
   return <>
-  <Navbar />
-  <Component {...pageProps} />
-  <Footer />
+  <Navbar cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+  <Component {...pageProps} cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+  <Footer  />
   </>
 }
 
