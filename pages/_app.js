@@ -8,10 +8,24 @@ function MyApp({ Component, pageProps }) {
  const [subTotal, setSubTotal] = useState(0)
   const saveCart =(myCart)=>{
     localStorage.setItem("cart", myCart)
+
+    
   }
 
   useEffect(()=>{
 
+     try {
+
+      if (localStorage.getItem('cart')){
+        setCart(JSON.parse(localStorage.getItem('cart')))
+  
+      }
+      
+     } catch (error) {
+      console.error(error)
+      localStorage.clear()
+     }
+    
 
   },[])
 
