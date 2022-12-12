@@ -107,7 +107,9 @@ const signup = () => {
                                         >Remember me</label
                                         >
                                     </div>
-                                    <a href="#!" class="text-gray-800">Forgot password?</a>
+                                    <Link href={'/forgetpassword'} class="text-gray-800">
+                                     <p>Forgot password?</p>
+                                    </Link>
                                 </div>
 
                                 <div class="text-center lg:text-left">
