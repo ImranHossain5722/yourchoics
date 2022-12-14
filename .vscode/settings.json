@@ -1,0 +1,6 @@
+{
+    "editor.wordWrap": "wordWrapColumn",
+    "html.format.wrapAttributes": "aligned-multiple",
+    "diffEditor.wordWrap": "on",
+    "editor.wrappingIndent": "deepIndent"
+}

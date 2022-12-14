@@ -7,7 +7,7 @@ import { MdAccountCircle} from 'react-icons/md'
 
 
 const Navbar = ({cart , addCart, removeFromCart, clearCart, subTotal}) => {
-    console.log(cart , addCart, removeFromCart, clearCart, subTotal)
+    // console.log(cart , addCart, removeFromCart, clearCart, subTotal)
 
     const toggleCart = () => {
 

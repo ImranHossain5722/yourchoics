@@ -7,6 +7,8 @@ if(mongoose.connections[0].readyState){
 }
 await mongoose.connect(process.env.MONGO_URI)
 return handler(req,res)
+
+
 }
 
 export default connectDb;
