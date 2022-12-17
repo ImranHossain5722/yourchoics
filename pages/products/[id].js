@@ -8,18 +8,19 @@ const Post = ({ addCart, product, variants }) => {
   const { id } = router.query;
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
-    const refresh = (newsize, newcolor)=>{
-      let url =`http://localhost:300/product/${variants[newsize][newcolor]['id']}`
-      window.location= url
-    }
+  const refreshVariant = (newsize, newcolor) => {
+    // console.log('check', newsize, newcolor ,id)
+    let url = `http://localhost:3000/products/${variants[newcolor][newsize]['id']}`
+    window.location = url
+
+  }
 
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <img
-              alt="ecommerce"
+            <img alt="ecommerce"
               className="lg:w-1/3 w-full lg:h-auto p-14 object-top object-center rounded"
               src="https://m.media-amazon.com/images/I/815neXEKmeL._AC_UL320_.jpg"
             />
@@ -139,32 +140,33 @@ const Post = ({ addCart, product, variants }) => {
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
-                  {Object.keys(variants).includes("black") &&
-                    Object.keys(variants["black"]).includes(size) && 
-                      <button onClick={()=>{refresh(size, 'black')}} className={`border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none ${color==='black' ?'border-black' : 'border-gray-300' }`}></button>
-                    }
+                  {Object.keys(variants).includes("green") &&         
+                   Object.keys(variants["green"]).includes(size) &&
+                  <button onClick={() =>{refreshVariant(size, 'green')}} className={`border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none ${color === 'green' ? 'border-black' : 'border-gray-300'}`}></button>}
+
                   {Object.keys(variants).includes("red") &&
-                    Object.keys(variants["red"]).includes(size) && 
-                      <button onClick={()=>{refresh(size, 'red')}} className={`border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none ${color==='red' ?'border-black' : 'border-gray-300' }`}></button>
-                    }
+                  Object.keys(variants["red"]).includes(size) &&
+                  <button onClick={() =>{refreshVariant(size, 'red')}} className={`border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none ${color === 'red' ? 'border-black' : 'border-gray-300'}`}></button>
+                  }
                   {Object.keys(variants).includes("blue") &&
-                    Object.keys(variants["blue"]).includes(size) && 
-                      <button onClick={()=>{refresh(size, 'blue')}} className={`border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none ${color==='blue' ?'border-black' : 'border-gray-300' }`}></button>
-                    }
+                  Object.keys(variants["blue"]).includes(size) &&
+                  <button onClick={() =>{refreshVariant(size, 'blue')}} className={`border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none ${color === 'blue' ? 'border-black' : 'border-gray-300'}`}></button>
+                  }
                   {Object.keys(variants).includes("gray") &&
-                    Object.keys(variants["gray"]).includes(size) && 
-                      <button onClick={()=>{refresh(size, 'gray')}} className={`border-2 border-gray-300 ml-1 bg-gray-500 rounded-full w-6 h-6 focus:outline-none ${color==='gray' ?'border-black' : 'border-gray-300' }`}></button>
-                    }
+                  Object.keys(variants["gray"]).includes(size) &&
+                 <button onClick={()=>{refreshVariant(size, 'gray')}} className={`border-2 border-gray-300 ml-1 bg-gray-500 rounded-full w-6 h-6 focus:outline-none ${color === 'gray' ? 'border-black' : 'border-gray-300'}`}></button>
+                  }
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select value={size} onChange={(e)=>{refresh(e.target.value, color)}} className=" bg-white rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                      {Object.keys(variants[color]).includes('s') &&  <option value={'s'}>S</option>}
-                      {Object.keys(variants[color]).includes('m') &&  <option value={'m'}>M</option>}
-                      {Object.keys(variants[color]).includes('l') &&  <option value={'l'}>L</option>}
-                      {Object.keys(variants[color]).includes('xl') &&  <option value={'xl'}>XL</option>}
-                      
+                  <select value={size} onChange={(e)=>{refreshVariant(e.target.value, color)}} className=" bg-white rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+
+          {Object.keys(variants[color]).includes('s') && <option value={'s'}>S</option>}
+          {Object.keys(variants[color]).includes('m') && <option value={'m'}>M</option>}
+          {Object.keys(variants[color]).includes('l') && <option value={'l'}>L</option>}
+          {Object.keys(variants[color]).includes('xl')&& <option value={'xl'}>XL</option>}
+
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg
@@ -220,23 +222,22 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  let product = await Product.findOne({ id: context.query.id });
-  let variants = await Product.find({ title: product.title });
+  let product = await Product.findOne({ id:context.query.id });
+  let variants = await Product.find({ title:product.title });
   let colorSizeSlug = {}; //{res: {xl: {slug: 'new-blue-shirt'}}}
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {
-      colorSizeSlug[item.color][item.size] = { id: item.id };
-    } 
+      colorSizeSlug [item.color][item.size] = { id: item.id };
+    }
     else {
       colorSizeSlug[item.color] = {};
-      colorSizeSlug[item.color][item.size] = { id: item.id };
+      colorSizeSlug [item.color] [item.size]= { id:item.id };
     }
   }
 
   return {
-    props: {
-      product: JSON.parse(JSON.stringify(product)),
-      variants: JSON.parse(JSON.stringify(colorSizeSlug))}, // will be passed to the page component as props
+    props:{product:JSON.parse(JSON.stringify(product)),variants:JSON.parse(JSON.stringify(colorSizeSlug))}
+     // will be passed to the page component as props
   };
 }
 
