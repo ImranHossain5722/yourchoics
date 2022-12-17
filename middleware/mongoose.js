@@ -11,4 +11,4 @@ return handler(req,res)
 
 }
 
-export default connectDb;
+export default connectDb
