@@ -1,12 +1,15 @@
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import '../styles/globals.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {
  const [cart, setCart] =useState({})
  const [subTotal, setSubTotal] = useState(0)
- 
+ const router =useRouter()
 
 
  const saveCart =(myCart)=>{
@@ -49,6 +52,25 @@ newCart[itemCode]={qty:1, price, name , size, variant}
   }
   setCart(newCart)
   saveCart(newCart)
+  toast.info('Product add to cart successfully', {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+}
+
+// buy now button
+const buyNow = (itemCode, qty, price, name, size, variant)=>{
+let newCart ={itemCode:{qty:1 , price, name, size, variant}}
+  
+  setCart(newCart)
+  saveCart(newCart)
+  router.push('/checkout')
 }
 
 const  removeFromCart =(itemCode, qty, price, name, size, variant)=>{
@@ -73,7 +95,7 @@ const clearCart =()=>{
 
   return <>
   <Navbar cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
-  <Component {...pageProps} cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+  <Component {...pageProps} buyNow={buyNow} cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
   <Footer  />
   </>
 }

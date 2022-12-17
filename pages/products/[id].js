@@ -2,12 +2,17 @@ import { useRouter } from "next/router";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
 import { useState } from "react";
-const Post = ({ addCart, product, variants }) => {
-  console.log(product, variants)
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const Post = ({ buyNow, clearCart, addCart, product, variants }) => {
+  // console.log(product, variants)
   const router = useRouter();
   const { id } = router.query;
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
+
   const refreshVariant = (newsize, newcolor) => {
     // console.log('check', newsize, newcolor ,id)
     let url = `http://localhost:3000/products/${variants[newcolor][newsize]['id']}`
@@ -15,21 +20,32 @@ const Post = ({ addCart, product, variants }) => {
 
   }
 
+
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <img alt="ecommerce"
-              className="lg:w-1/3 w-full lg:h-auto p-14 object-top object-center rounded"
-              src="https://m.media-amazon.com/images/I/815neXEKmeL._AC_UL320_.jpg"
-            />
+            <img className="lg:w-1/3 w-full lg:h-auto p-14 object-top object-center rounded" alt="ecommerce"
+              src={product.img} />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-              <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                T-shirt{" "}
+              <h2 className="text-sm title-font text-gray-500 tracking-widest uppercase">
+                {product.category}
               </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                Your choice T-shirt
+              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 capitalize">
+                {product.title} ({product.size}/{product.color})
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
@@ -130,42 +146,37 @@ const Post = ({ addCart, product, variants }) => {
                 </span>
               </div>
               <p className="leading-relaxed">
-                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo
-                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-                seitan poutine tumeric. Gastropub blue bottle austin listicle
-                pour-over, neutra jean shorts keytar banjo tattooed umami
-                cardigan.
+                {product.desc}
               </p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
-                  {Object.keys(variants).includes("green") &&         
-                   Object.keys(variants["green"]).includes(size) &&
-                  <button onClick={() =>{refreshVariant(size, 'green')}} className={`border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none ${color === 'green' ? 'border-black' : 'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes("green") &&
+                    Object.keys(variants["green"]).includes(size) &&
+                    <button onClick={() => { refreshVariant(size, 'green') }} className={`border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none ${color === 'green' ? 'border-black' : 'border-gray-300'}`}></button>}
 
                   {Object.keys(variants).includes("red") &&
-                  Object.keys(variants["red"]).includes(size) &&
-                  <button onClick={() =>{refreshVariant(size, 'red')}} className={`border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none ${color === 'red' ? 'border-black' : 'border-gray-300'}`}></button>
+                    Object.keys(variants["red"]).includes(size) &&
+                    <button onClick={() => { refreshVariant(size, 'red') }} className={`border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none ${color === 'red' ? 'border-black' : 'border-gray-300'}`}></button>
                   }
                   {Object.keys(variants).includes("blue") &&
-                  Object.keys(variants["blue"]).includes(size) &&
-                  <button onClick={() =>{refreshVariant(size, 'blue')}} className={`border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none ${color === 'blue' ? 'border-black' : 'border-gray-300'}`}></button>
+                    Object.keys(variants["blue"]).includes(size) &&
+                    <button onClick={() => { refreshVariant(size, 'blue') }} className={`border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none ${color === 'blue' ? 'border-black' : 'border-gray-300'}`}></button>
                   }
                   {Object.keys(variants).includes("gray") &&
-                  Object.keys(variants["gray"]).includes(size) &&
-                 <button onClick={()=>{refreshVariant(size, 'gray')}} className={`border-2 border-gray-300 ml-1 bg-gray-500 rounded-full w-6 h-6 focus:outline-none ${color === 'gray' ? 'border-black' : 'border-gray-300'}`}></button>
+                    Object.keys(variants["gray"]).includes(size) &&
+                    <button onClick={() => { refreshVariant(size, 'gray') }} className={`border-2 border-gray-300 ml-1 bg-gray-500 rounded-full w-6 h-6 focus:outline-none ${color === 'gray' ? 'border-black' : 'border-gray-300'}`}></button>
                   }
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                  <select value={size} onChange={(e)=>{refreshVariant(e.target.value, color)}} className=" bg-white rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                    <select value={size} onChange={(e) => { refreshVariant(e.target.value, color) }} className=" bg-white rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
 
-          {Object.keys(variants[color]).includes('s') && <option value={'s'}>S</option>}
-          {Object.keys(variants[color]).includes('m') && <option value={'m'}>M</option>}
-          {Object.keys(variants[color]).includes('l') && <option value={'l'}>L</option>}
-          {Object.keys(variants[color]).includes('xl')&& <option value={'xl'}>XL</option>}
+                      {Object.keys(variants[color]).includes('s') && <option value={'s'}>S</option>}
+                      {Object.keys(variants[color]).includes('m') && <option value={'m'}>M</option>}
+                      {Object.keys(variants[color]).includes('l') && <option value={'l'}>L</option>}
+                      {Object.keys(variants[color]).includes('xl') && <option value={'xl'}>XL</option>}
 
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
@@ -186,16 +197,23 @@ const Post = ({ addCart, product, variants }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $58.00
+                  ${product.price}
                 </span>
                 <button
+                  onClick={() => { buyNow(id, 1, product.price, product.title, size, color) }}
+                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  Buy Now
+                </button>
+                <button
                   onClick={() => {
-                    addCart(id, 1, 16, "your choice t-shirtimran", "xl", "red");
+                    addCart(id, 1, product.price, product.title, size, color);
                   }}
                   className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
                   Add to Cart
                 </button>
+
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg
                     fill="currentColor"
@@ -222,22 +240,22 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  let product = await Product.findOne({ id:context.query.id });
-  let variants = await Product.find({ title:product.title });
+  let product = await Product.findOne({ id: context.query.id });
+  let variants = await Product.find({ title: product.title });
   let colorSizeSlug = {}; //{res: {xl: {slug: 'new-blue-shirt'}}}
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {
-      colorSizeSlug [item.color][item.size] = { id: item.id };
+      colorSizeSlug[item.color][item.size] = { id: item.id };
     }
     else {
       colorSizeSlug[item.color] = {};
-      colorSizeSlug [item.color] [item.size]= { id:item.id };
+      colorSizeSlug[item.color][item.size] = { id: item.id };
     }
   }
 
   return {
-    props:{product:JSON.parse(JSON.stringify(product)),variants:JSON.parse(JSON.stringify(colorSizeSlug))}
-     // will be passed to the page component as props
+    props: { product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(colorSizeSlug)) }
+    // will be passed to the page component as props
   };
 }
 
