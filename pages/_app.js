@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps }) {
  const [cart, setCart] =useState({})
  const [subTotal, setSubTotal] = useState(0)
+ const [user, setUser]=useState({value:null})
+ const [key, setKey] = useState()
  const router =useRouter()
 
 
@@ -36,9 +38,13 @@ function MyApp({ Component, pageProps }) {
       console.error(error)
       localStorage.clear()
      }
-    
+    const token = localStorage.getItem('token')
+    if(token){
+      setUser({value:token})
+      setKey(Math.random())
+    }
 
-  },[])
+  },[router.query])
 
 const  addCart =(itemCode, qty, price, name, size, variant)=>{
 
@@ -94,7 +100,7 @@ const clearCart =()=>{
 }
 
   return <>
-  <Navbar cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+  <Navbar user={user} key={key} cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
   <Component {...pageProps} buyNow={buyNow} cart={cart} addCart={addCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
   <Footer  />
   </>
