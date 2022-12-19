@@ -6,7 +6,7 @@ import { IoIosCloseCircle, IoBagCheckOutline } from 'react-icons/io'
 import { MdAccountCircle } from 'react-icons/md'
 
 
-const Navbar = ({ user, cart, addCart, removeFromCart, clearCart, subTotal }) => {
+const Navbar = ({ logout, user, cart, addCart, removeFromCart, clearCart, subTotal }) => {
     // console.log(cart , addCart, removeFromCart, clearCart, subTotal)
     // dropdown menu state
     const[dropdown,setDropdown] =useState(false)
@@ -44,18 +44,18 @@ const Navbar = ({ user, cart, addCart, removeFromCart, clearCart, subTotal }) =>
                 {/* cart menu */}
                 <div className='cart flex absolute  right-0 mx-5 cursor-pointer'>
                     <a onMouseOver={()=> setDropdown(true)} onMouseLeave={()=>setDropdown(false)}>                   
-                    { dropdown && <div className='absolute right-8 top-6 bg-blue-600 rounded-md px-5 w-36 cursor-pointer'>
+                    { dropdown && <div className='absolute right-10 top-6 bg-white rounded-md drop-shadow-2xl px-5 py-4 w-36 cursor-pointer'>
                         <ul className=''>
-                            <li className='py-1 text-sm text-black  hover:text-white'>My Account</li>
-                            <li className='py-1 text-sm text-black hover:text-white'>Order</li>
-                            <li className='py-1 text-sm text-black hover:text-white'>Logout</li>
+                            <Link href={'/myaccount'}><li className='py-1 text-sm text-black  hover:text-blue-600'>My Account</li></Link>
+                            <Link href={'/order'}><li className='py-1 text-sm text-black hover:text-blue-600'>Order</li></Link>
+                            <li onClick={logout} className='py-1 text-sm text-black hover:text-blue-600'>Logout</li>
                         </ul>
                     </div>}
                 {user.value && <MdAccountCircle  className='text-2xl text-black mr-3' />} </a>
 
     
                 {!user.value && <Link href={'/login'}>
-                    <button className='bg-blue-600 text-white p-2 mr-2 rounded-xl  text-xs shadow-lg'>Login</button>
+                    <button className='bg-white text-black hover:text-blue-600  p-2 mr-2 rounded-xl  text-xs shadow-xl' >Login</button>
                     </Link>}
                     <AiOutlineShoppingCart onClick={toggleCart} className='text-2xl text-black' />
 

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const router =useRouter()
+  const router = useRouter()
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -30,50 +30,60 @@ const Login = () => {
     console.log(response);
     setEmail("");
     setPassword("");
-    if(response.success){
-      localStorage.setItem('token',response.token)
-        toast.success("successfully login", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          setTimeout(()=>{
-            router.push('http://localhost:3000')
-          },2000)
-          
-    }else{
-        toast.error(response.error, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+    if (response.success) {
+      localStorage.setItem('token', response.token)
+      toast.success("successfully login", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(() => {
+        router.push('http://localhost:3000')
+      }, 2000)
+
+    } else {
+      toast.error(response.error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
-    
+
   };
+
+  // if user login redirect to home not show login page
+ useEffect(()=>{
+  if(localStorage.getItem('token')){
+    router.push('/')
+  }
+
+ },[]) 
+
+
   return (
     <>
       <section className="h-screen">
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
         />
         <div className="px-6 h-full text-gray-800">
           <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
@@ -175,19 +185,7 @@ const Login = () => {
                 </div>
 
                 <div className="flex justify-between items-center mb-6">
-                  <div className="form-group form-check">
-                    {/* <input
-                      type="checkbox"
-                      className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                      id="exampleCheck2"
-                    /> */}
-                    <label
-                      className="form-check-label inline-block text-gray-800"
-                      for="exampleCheck2"
-                    >
-                      Remember me
-                    </label>
-                  </div>
+
                   <Link href={"/forgetpassword"} className="text-gray-800">
                     <p>Forgot password?</p>
                   </Link>

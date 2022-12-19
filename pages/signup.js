@@ -1,67 +1,75 @@
-import React   from "react"
+import React from "react"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/router";
 const Signup = () => {
-    
-  const [name, setName] = useState() 
-  const [email,setEmail] =useState()
-  const [password,setPassword] =useState()
+  const router = useRouter()
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
 
- const handleChange =(e)=>{
+  const handleChange = (e) => {
 
-    if(e.target.name == 'name'){
-        setName(e.target.value)
+    if (e.target.name == 'name') {
+      setName(e.target.value)
     }
-    else if(e.target.name =='email'){
-        setEmail(e.target.value)
+    else if (e.target.name == 'email') {
+      setEmail(e.target.value)
     }
-    else if(e.target.name =='password'){
-        setPassword(e.target.value)
+    else if (e.target.name == 'password') {
+      setPassword(e.target.value)
     }
- }
+  }
 
 
-  const handelSubmit = async (e) =>{
+  const handelSubmit = async (e) => {
     e.preventDefault()
-    const data= {name,email,password}
-    let res = await fetch('http://localhost:3000/api/signup',{
-        method:'POST',
-        headers:{'content-Type':'application/json'},
-        body: JSON.stringify(data)
+    const data = { name, email, password }
+    let res = await fetch('http://localhost:3000/api/signup', {
+      method: 'POST',
+      headers: { 'content-Type': 'application/json' },
+      body: JSON.stringify(data)
     })
-    let response =await res.json()
+    let response = await res.json()
     // console.log(response)
     setEmail('')
     setName('')
     setPassword('')
     toast.success('Your account has been created', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        });
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 
+  // if user signup redirect to home not show signup page
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      router.push('/')
+    }
+  
+   },[]) 
   return (
     <div>
-        <ToastContainer
-position="top-center"
-autoClose={3000}
-hideProgressBar={false}
-newestOnTop
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <section className="h-screen">
         <div className="px-6 h-full text-gray-800">
           <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
@@ -137,7 +145,7 @@ theme="light"
 
                 <div className="mb-6">
                   <input value={name} onChange={handleChange}
-                    type="text"   id="name" name="name"
+                    type="text" id="name" name="name"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Your Name"
                   />
@@ -146,36 +154,19 @@ theme="light"
                   <input value={email} onChange={handleChange}
                     type="email" id="email" name="email" autoComplete="email" required
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                     
+
                     placeholder="Email address"
                   />
                 </div>
 
                 <div className="mb-6">
-                  <input value={password} onChange={handleChange} 
-                    type="password"  name="password" id="password" autoComplete="current-password"
+                  <input value={password} onChange={handleChange}
+                    type="password" name="password" id="password" autoComplete="current-password"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                   
+
                     placeholder="Password"
                   />
                 </div>
-
-                <div className="flex justify-between items-center mb-6">
-                  <div className="form-group form-check">
-                    {/* <input
-                      type="checkbox"
-                      className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                      id="exampleCheck2"
-                    /> */}
-                    <label
-                      className="form-check-label inline-block text-gray-800"
-                      for="exampleCheck2"
-                    >
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-
                 <div className="text-center lg:text-left">
                   <button type="submit"
                     className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
@@ -183,7 +174,7 @@ theme="light"
                     Sign Up
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                
+
                     You have an account?
                     <Link
                       href={"/login"}
